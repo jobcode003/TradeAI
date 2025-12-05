@@ -14,7 +14,7 @@ api_key = "fb941e0ebad44b4caa431760fcc5bef3"
 client = TwelveDataClient(api_key)
 
 df = client.get_forex_history(
-    symbol="EUR/USD",
+    symbol="USD/CHF",
     interval="15min",
     output_size=5000
 )
@@ -71,8 +71,8 @@ earlystop=EarlyStopping(
     verbose=1
 )
 modelcheckpoint=ModelCheckpoint(
-    filepath="/home/job/Desktop/projects/TradeAI/model.keras",
-   monitor='val_mse',
+    filepath="/home/job/Desktop/projects/TradeAI/MLmodels/Forex/forex_models/USDCHF/15min/model.keras",
+    monitor='val_mse',
     save_best_only=True,
     save_weights_only=False,
     verbose=1,
