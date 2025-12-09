@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeAI | Forex Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                Trade<span>AI</span>
+            </div>
+            <div class="status-indicator">
+                {% if user.is_authenticated %}
+                <span style="margin-right: 15px; color: var(--accent-color);">Hello {{ user.username }}, welcome</span>
+                <a href="{% url 'logout' %}" style="color: #888; text-decoration: none; font-size: 0.8rem;">LOGOUT</a>
+                {% else %}
+                <div class="dot"></div>
+                SYSTEM ONLINE
+                {% endif %}
+            </div>
+        </header>
+
+        <main id="chat-container">
+            <div class="chat-area" id="chatArea">
+                <div class="message bot">
+                    Welcome to TradeAI. I am ready to analyze the Forex markets for you.
+                    <br><br>
+                    Supported Pairs: EUR/USD, GBP/USD, USD/JPY
+                    <br>
+                    Timeframes: 15min, 30min, 1h
+                    <br><br>
+                    Example: "Should I buy EUR/USD on the 30min timeframe?"
+                </div>
+            </div>
+        </main>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Enter your trading prompt..." autocomplete="off">
+            <button id="analyzeBtn" onclick="sendMessage()">Analyze</button>
+        </div>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

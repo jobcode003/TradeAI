@@ -1,0 +1,18 @@
+# Virtual environment
+venv/
+.venv/
+ENV/
+env/
+
+# Caches & compiled
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+
+# Django
+*.sqlite3
+db.sqlite3
+staticfiles/
+media/

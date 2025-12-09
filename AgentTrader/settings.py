@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'AgentApp',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +75,19 @@ WSGI_APPLICATION = 'AgentTrader.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'tradeai_db',
+        'USER': 'postgres',
+        'PASSWORD': 'Jobuser123!', # CHANGE THIS: Update with your Postgres password
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
+# Authentication
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'chat'
+LOGOUT_REDIRECT_URL = 'login'
 
 
 # Password validation
@@ -120,3 +130,5 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'AgentApp.CustomUser'
