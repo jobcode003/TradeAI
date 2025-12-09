@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeAI | Intelligent Forex Trading</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body class="landing-page">
+    <div class="landing-container">
+        <header class="landing-header">
+            <div class="logo">
+                Trade<span>AI</span><span class="blink">—</span>
+            </div>
+            <nav class="landing-nav">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#features">Features</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#pricing">Pricing</a>
+            </nav>
+            <div class="auth-buttons">
+                <a href="{% url 'login' %}" class="btn-login">Sign In</a>
+                <a href="{% url 'signup' %}" class="btn-signup">Sign Up</a>
+            </div>
+        </header>
+
+        <main>
+            <section id="home" class="hero-section">
+                <div class="hero-content">
+                    <h1>Trade the Markets with <span class="text-accent">AI Precision</span></h1>
+                    <p class="hero-subtitle">Advanced machine learning algorithms predicting Forex movements in
+                        real-time. Trade smarter, not harder.</p>
+                    <div class="hero-cta">
+                        <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+                        <a href="#features" class="btn-secondary">Explore Features</a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="ai-orb"></div>
+                </div>
+            </section>
+
+
+            <section id="about" class="section-padding">
+                <h2 class="section-title">About TradeAI</h2>
+                <div class="about-grid">
+                    <div class="about-card">
+                        <h3>The Origin</h3>
+                        <p>Created in 2025 by Elite Computer Science specialist in Machine learning and AI engineering
+                            veteran trader, TradeAI was born from
+                            the need to eliminate emotional bias from trading Making it possible
+                            for traders to make better decisions on trades without fear or speculations.</p>
+                    </div>
+                    <div class="about-card">
+                        <h3>The Mission</h3>
+                        <p>To democratize institutional-grade market intelligence. We believe every trader deserves
+                            access to the same powerful tools used by hedge funds.Making trading easy for both male and
+                            female
+                            traders.
+                        </p>
+                    </div>
+                    <div class="about-card">
+                        <h3>The Tech</h3>
+                        <p>Powered by state-of-the-art Long Short Term Memory models trained on factual, clean and
+                            historical data, our agent
+                            analyze thousands of data points instantly to provide you with the best possible trading
+                            signals. with 18+ models accross various
+                            major forex pairs with various timeframes.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features / Forex Pairs Section -->
+            <section id="features" class="section-padding bg-darker">
+                <h2 class="section-title">Supported Markets</h2>
+                <p class="section-desc">Our AI agents are specialized in major liquidity pairs.</p>
+                <div class="pairs-grid">
+                    <div class="pair-card">
+                        <div class="pair-icon">€/$</div>
+                        <h3>EUR/USD</h3>
+                        <p>High liquidity, low spread. The most traded pair globally.</p>
+                    </div>
+                    <div class="pair-card">
+                        <div class="pair-icon">£/$</div>
+                        <h3>GBP/USD</h3>
+                        <p>Volatile and profitable. Perfect for momentum trading.</p>
+                    </div>
+                    <div class="pair-card">
+                        <div class="pair-icon">$/¥</div>
+                        <h3>USD/JPY</h3>
+                        <p>Asian session dominance. Predictable macro trends.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section id="testimonials" class="section-padding">
+                <h2 class="section-title">Trader Stories</h2>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="quote">"TradeAI changed my game. The 30min timeframe predictions are scarily
+                            accurate."</p>
+                        <div class="author">- Sarah J., Forex Trader</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"Finally, a tool that doesn't just give signals but explains the 'why'. Highly
+                            recommended."</p>
+                        <div class="author">- Michael K., Day Trader</div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="quote">"I was skeptical about AI in trading, but the backtest results speak for
+                            themselves."</p>
+                        <div class="author">- David R., Quant Analyst</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section id="pricing" class="section-padding bg-darker">
+                <h2 class="section-title">Simple Pricing</h2>
+                <div class="pricing-grid">
+                    <div class="pricing-card">
+                        <h3>Starter</h3>
+                        <div class="price">$0<span>/mo</span></div>
+                        <ul class="features-list">
+                            <li>Basic EUR/USD Predictions</li>
+                            <li>Daily Market Summary</li>
+                            <li>Community Support</li>
+                        </ul>
+                        <a href="{% url 'signup' %}" class="btn-outline">Start Free</a>
+                    </div>
+                    <div class="pricing-card featured">
+                        <div class="badge">POPULAR</div>
+                        <h3>Pro</h3>
+                        <div class="price">$49<span>/mo</span></div>
+                        <ul class="features-list">
+                            <li>All Major Pairs</li>
+                            <li>Real-time Alerts</li>
+                            <li>15min, 30min, 1h Timeframes</li>
+                            <li>Priority Support</li>
+                        </ul>
+                        <a href="{% url 'signup' %}" class="btn-primary">Go Pro</a>
+                    </div>
+                    <div class="pricing-card">
+                        <h3>Institutional</h3>
+                        <div class="price">$199<span>/mo</span></div>
+                        <ul class="features-list">
+                            <li>API Access</li>
+                            <li>Custom Pairs</li>
+                            <li>Strategy Backtesting</li>
+                            <li>Dedicated Account Manager</li>
+                        </ul>
+                        <a href="#" class="btn-outline">Contact Sales</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="landing-footer">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    Trade<span>AI</span>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="copyright">
+                    &copy; 2024 TradeAI. All rights reserved.
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

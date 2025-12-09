@@ -16,11 +16,10 @@ async function sendMessage() {
 
     if (!messageText) return;
 
-    // Add user message
     addMessage(messageText, 'user');
     userInput.value = '';
 
-    // Show loading state
+
     const loadingId = addMessage('Analyzing market data...', 'bot');
 
     try {
@@ -31,21 +30,19 @@ async function sendMessage() {
             },
             body: JSON.stringify({
                 prompt: messageText,
-                api_key: '' // Server handles key
+                api_key: ''
             })
         });
 
         const data = await response.json();
 
-        // Remove loading message
+
         const loadingMsg = document.getElementById(loadingId);
         if (loadingMsg) loadingMsg.remove();
 
         if (response.ok) {
-            // Add bot response text
-            addMessage(data.response, 'bot');
 
-            // Add trade card if data exists
+            addMessage(data.response, 'bot');
             if (data.data) {
                 addTradeCard(data.data);
             }

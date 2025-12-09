@@ -59,7 +59,7 @@ class ModelInference:
         df["macd"] = macd.macd()
         df["macd_signal"] = macd.macd_signal()
 
-        # --- Target Variable (Feature in training!) ---
+        # --- Target Variable ---
         df["future_close"] = df["close"].shift(-1)
         
         # FILL NaN future_close with current close for the last row

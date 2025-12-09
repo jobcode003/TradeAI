@@ -22,7 +22,7 @@ def signup_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('chat')
+            return redirect('dashboard')
     else:
         form = SignupForm()
     return render(request, 'signup.html', {'form': form})
@@ -33,7 +33,7 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return redirect('chat')
+            return redirect('dashboard')
     else:
         form = LoginForm()
     return render(request, 'login.html', {'form': form})
@@ -43,11 +43,17 @@ def logout_view(request):
     return redirect('login')
 
 def forgot_password_view(request):
+    
     return render(request, 'forgot_password.html')
 
 @login_required
-def chat_view(request):
+def dashboard_view(request):
     return render(request, 'index.html', {'user': request.user})
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'landing.html')
 
 @csrf_exempt
 def api_chat(request):
