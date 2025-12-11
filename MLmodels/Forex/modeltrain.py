@@ -14,7 +14,7 @@ api_key = "fb941e0ebad44b4caa431760fcc5bef3"
 client = TwelveDataClient(api_key)
 
 df = client.get_forex_history(
-    symbol="EUR/USD",
+    symbol="AUD/USD",
     interval="30min",
     output_size=5000
 )
@@ -38,6 +38,7 @@ clean_data(df_features)
 def prepare_lstm_data(df, feature_cols, target_col="future_close", seq_length=50):
     scaler = StandardScaler()
     scaled_features = scaler.fit_transform(df[feature_cols])
+    
 
     X, y = [], []
     for i in range(len(df) - seq_length):
@@ -55,6 +56,7 @@ def prepare_lstm_data(df, feature_cols, target_col="future_close", seq_length=50
 feature_cols = [c for c in df_features.columns if c not in ["timestamp"]]
 X_train, X_test, y_train, y_test, scaler = prepare_lstm_data(df_features, feature_cols, seq_length=50)
 
+
 model=models.Sequential([
     layers.LSTM(256,return_sequences=True,input_shape=(X_train.shape[1],X_train.shape[2])),
     layers.Dropout(0.2),
@@ -71,7 +73,7 @@ earlystop=EarlyStopping(
     verbose=1
 )
 modelcheckpoint=ModelCheckpoint(
-    filepath="/home/job/Desktop/projects/TradeAI/MLmodels/Forex/forex_models/EURUSD/30min/model.keras",
+    filepath="/home/job/Desktop/projects/TradeAI/MLmodels/Forex/forex_models/AUDUSD/30min/model.keras",
     monitor='val_mse',
     save_best_only=True,
     save_weights_only=False,
