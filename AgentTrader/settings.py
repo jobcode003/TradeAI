@@ -26,11 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-<<<<<<< HEAD
-DEBUG = False
-=======
 DEBUG = config('DEBUG', cast=bool)
->>>>>>> working
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
@@ -38,7 +34,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.parse(env('DATABASE_URL'))
+    'default': dj_database_url.parse(config('DATABASE_URL'))
 }
 
 
@@ -99,7 +95,7 @@ DATABASES = {
     }
 }
 
-DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+#DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # Authentication
 LOGIN_URL = 'login'

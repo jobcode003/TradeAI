@@ -1,0 +1,228 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tradeai
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tradeai-config
+  namespace: tradeai
+data:
+  ALLOWED_HOSTS: "*"
+  DEBUG: "False"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tradeai-secrets
+  namespace: tradeai
+type: Opaque
+stringData:
+  SECRET_KEY: "django-insecure-im@5i6j6ayme_d*((m(=z-$iosen2khney-y*d$inq5bd6^na4"
+  DATABASE_URL: "postgresql://tradeai_user:D24t5WQbJlpHooRnubR2iS6da3f9uBSm@dpg-d4tple717kns73cp9090-a.oregon-postgres.render.com/tradeai"
+  POSTGRES_PASSWORD: "Jobuser123!"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+  namespace: tradeai
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: tradeai
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: tradeai_db
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: tradeai-secrets
+              key: POSTGRES_PASSWORD
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: tradeai
+spec:
+  selector:
+    app: postgres
+  ports:
+  - port: 5432
+    targetPort: 5432
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tradeai-web
+  namespace: tradeai
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tradeai-web
+  template:
+    metadata:
+      labels:
+        app: tradeai-web
+    spec:
+      initContainers:
+      - name: migrate
+        image: your-registry/tradeai:latest
+        command: ["python", "manage.py", "migrate"]
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tradeai-secrets
+              key: SECRET_KEY
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: tradeai-secrets
+              key: DATABASE_URL
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: tradeai-config
+              key: ALLOWED_HOSTS
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: tradeai-config
+              key: DEBUG
+      containers:
+      - name: web
+        image: your-registry/tradeai:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tradeai-secrets
+              key: SECRET_KEY
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: tradeai-secrets
+              key: DATABASE_URL
+        - name: ALLOWED_HOSTS
+          valueFrom:
+            configMapKeyRef:
+              name: tradeai-config
+              key: ALLOWED_HOSTS
+        - name: DEBUG
+          valueFrom:
+            configMapKeyRef:
+              name: tradeai-config
+              key: DEBUG
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tradeai-service
+  namespace: tradeai
+spec:
+  selector:
+    app: tradeai-web
+  ports:
+  - port: 80
+    targetPort: 8000
+  type: LoadBalancer
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: tradeai-hpa
+  namespace: tradeai
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tradeai-web
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
