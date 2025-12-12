@@ -33,9 +33,6 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 import dj_database_url
 
-DATABASES = {
-    'default': dj_database_url.parse(config('DATABASE_URL'))
-}
 
 
 # Application definition
@@ -95,7 +92,7 @@ DATABASES = {
     }
 }
 
-#DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # Authentication
 LOGIN_URL = 'login'
