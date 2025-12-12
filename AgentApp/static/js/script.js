@@ -114,7 +114,7 @@ function addTradeCard(data) {
 }
 
 function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  console.log('Name: ' + profile.getName());
-  console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    var profile = googleUser.getBasicProfile();
+    console.log('Name: ' + profile.getName());
+    console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
 }
