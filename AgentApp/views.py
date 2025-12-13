@@ -10,12 +10,7 @@ import sys
 from .inference import ModelInference
 from .llm_service import LLMService
 from decouple import config
-
-# Initialize services (lazy loading or global)
-# Note: In production, handle API keys securely.
-# We'll assume they are in env or passed here.
-TWELVE_DATA_API_KEY = config('TWELVE_DATA_API_KEY')
-GROQ_API_KEY = config('GROQ_API_KEY')
+from django.conf import settings
 
 def signup_view(request):
     if request.method == 'POST':
@@ -65,14 +60,14 @@ def api_chat(request):
             data = json.loads(request.body)
             user_prompt = data.get('prompt', '')
             # Use provided key or fallback to server-side key
-            api_key = data.get('api_key') or GROQ_API_KEY
+            api_key = data.get('api_key') or settings.GROQ_API_KEY
             
             if not api_key:
                 return JsonResponse({"error": "Groq API Key is required"}, status=400)
                 
             # Initialize services
             llm_service = LLMService(api_key=api_key)
-            inference_service = ModelInference(api_key=TWELVE_DATA_API_KEY)
+            inference_service = ModelInference(api_key=settings.TWELVE_DATA_API_KEY)
             
             # 1. Parse Intent
             intent = llm_service.parse_intent(user_prompt)
